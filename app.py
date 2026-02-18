@@ -1,117 +1,102 @@
 import streamlit as st
 from openai import OpenAI
-from datetime import date
 
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
-
-client = OpenAI(api_key=OPENAI_API_KEY)
-
-MAX_SESSION_QUESTIONS = 5
-MAX_DAILY_QUESTIONS = 30
-
-# -------------------
-# DAILY RESET
-# -------------------
-today = str(date.today())
-
-if "daily_date" not in st.session_state:
-    st.session_state.daily_date = today
-    st.session_state.daily_count = 0
-
-if st.session_state.daily_date != today:
-    st.session_state.daily_date = today
-    st.session_state.daily_count = 0
-
-# -------------------
-# SESSION COUNT
-# -------------------
-if "session_count" not in st.session_state:
-    st.session_state.session_count = 0
-
-# -------------------
-# ADMIN MODE
-# -------------------
-st.sidebar.title("Admin")
-
-admin_input = st.sidebar.text_input("Admin password", type="password")
-
-admin_mode = admin_input == ADMIN_PASSWORD
-# -------------------
-# ADMIN DASHBOARD
-# -------------------
-if admin_mode:
-    st.sidebar.markdown("### 🔑 Admin Dashboard")
-
-    st.sidebar.write("Session count:", st.session_state.session_count)
-    st.sidebar.write("Daily count:", st.session_state.daily_count)
-    st.sidebar.write("Daily max:", MAX_DAILY_QUESTIONS)
-    st.sidebar.write("Session max:", MAX_SESSION_QUESTIONS)
-
-    # Reset session for all users
-    if st.sidebar.button("Reset Session Count"):
-        st.session_state.session_count = 0
-        st.success("Session count reset 🌿")
-
-    # Reset daily count
-    if st.sidebar.button("Reset Daily Count"):
-        st.session_state.daily_count = 0
-        st.success("Daily count reset 🌞")
-
-# -------------------
-# UI
-# -------------------
-st.title("🌀 Chakra Spiritual Guide")
-st.write("Ask anything about spirituality, chakras, healing, or inner growth.")
-
-system_prompt = """
-You are Chakra, a spiritually intelligent AI guide.
-You provide calm, wise, supportive spiritual guidance.
-"""
-
-user_input = st.text_input("Your question:")
-
-# -------------------
-# LIMIT CHECK
-# -------------------
-limit_reached = (
-    st.session_state.session_count >= MAX_SESSION_QUESTIONS
-    or st.session_state.daily_count >= MAX_DAILY_QUESTIONS
+# ===== PAGE CONFIG =====
+st.set_page_config(
+    page_title="Chakra — Spiritual Guidance",
+    page_icon="✨",
+    layout="centered"
 )
 
-if user_input:
-    if limit_reached and not admin_mode:
-        st.warning("Chakra has reached today's free energy limit 🌿")
+# ===== STYLING (GLOBAL PREMIUM) =====
+st.markdown("""
+<style>
+html, body, [class*="css"] {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #0e1117;
+    color: #ffffff;
+}
 
-        st.markdown("### 🔓 Unlock Chakra Guidance")
-        st.write("Continue receiving spiritual guidance today.")
+.main-title {
+    text-align: center;
+    font-size: 42px;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
 
-        if st.button("Unlock – R30"):
-            st.info("Payment link coming soon 🌿")
+.subtitle {
+    text-align: center;
+    font-size: 18px;
+    color: #a0a0a0;
+    margin-bottom: 40px;
+}
 
-    else:
+.stTextInput > div > div > input {
+    background-color: #1c1f26;
+    color: white;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.stButton button {
+    width: 100%;
+    border-radius: 12px;
+    padding: 12px;
+    background: linear-gradient(90deg, #7b5cff, #00c2ff);
+    color: white;
+    font-weight: 600;
+    border: none;
+}
+
+.response-box {
+    background-color: #1c1f26;
+    padding: 20px;
+    border-radius: 14px;
+    margin-top: 25px;
+    line-height: 1.6;
+    font-size: 17px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# ===== TITLE =====
+st.markdown('<div class="main-title">Chakra</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">Global Spiritual Guidance</div>', unsafe_allow_html=True)
+
+# ===== INPUT =====
+user_input = st.text_input("Ask for spiritual guidance")
+
+# ===== OPENAI CLIENT =====
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
+# ===== RESPONSE =====
+if st.button("Receive Guidance") and user_input:
+    with st.spinner("Connecting to spiritual insight..."):
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_input},
+                {
+                    "role": "system",
+                    "content": "You are Chakra, a calm, wise, globally inclusive spiritual guide. Speak with clarity, warmth, and depth. Avoid religion-specific language unless asked."
+                },
+                {
+                    "role": "user",
+                    "content": user_input
+                }
             ],
+            temperature=0.8
         )
 
-        st.markdown("**Chakra:**")
-        st.write(response.choices[0].message.content)
+        answer = response.choices[0].message.content
 
-        st.session_state.session_count += 1
-        st.session_state.daily_count += 1
+        st.markdown(
+            f'<div class="response-box">{answer}</div>',
+            unsafe_allow_html=True
+        )
 
-# -------------------
-# STATUS
-# -------------------
-st.sidebar.markdown("### Usage")
-st.sidebar.write("Session:", st.session_state.session_count, "/", MAX_SESSION_QUESTIONS)
-st.sidebar.write("Today:", st.session_state.daily_count, "/", MAX_DAILY_QUESTIONS)
+# ===== FOOTER =====
+st.markdown(
+    "<div style='text-align:center; margin-top:40px; color:#666;'>© Chakra Spiritual Guidance</div>",
+    unsafe_allow_html=True
+)
