@@ -13,12 +13,6 @@ col1, col2 = st.columns([1, 6])
 with col1:
     st.image("assets/chakra_icon.png", width=130)
 
-with col2:
-    st.title("Chakra Spiritual Intelligence")
-    st.write("A calm and conscious space for inner clarity, spiritual growth, and self discovery")
-
-st.divider()
-
 import streamlit as st
 from openai import OpenAI
 from datetime import date
@@ -270,6 +264,7 @@ st.markdown(
 st.sidebar.markdown("### Usage")
 st.sidebar.write("Session:", st.session_state.session_count, "/", MAX_SESSION_QUESTIONS)
 st.sidebar.write("Today:", st.session_state.daily_count, "/", MAX_DAILY_QUESTIONS)
+
 
 
 
