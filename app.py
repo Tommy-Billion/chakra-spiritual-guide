@@ -12,6 +12,66 @@ st.set_page_config(
 )
 
 # =========================
+# CHAKRA CUSTOM MENU
+# =========================
+import streamlit.components.v1 as components
+
+menu_html = """
+<style>
+.chakra-menu-container {
+    position: fixed;
+    top: 18px;
+    right: 20px;
+    z-index: 9999;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.chakra-menu-button {
+    font-size: 26px;
+    cursor: pointer;
+    color: white;
+}
+
+.chakra-menu-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #1c1f26;
+    min-width: 200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+    overflow: hidden;
+}
+
+.chakra-menu-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.chakra-menu-content a:hover {
+    background-color: #2a2f3a;
+}
+
+.chakra-menu-container:hover .chakra-menu-content {
+    display: block;
+}
+</style>
+
+<div class="chakra-menu-container">
+  <div class="chakra-menu-button">☰</div>
+  <div class="chakra-menu-content">
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);alert('Chakra link copied ✨');">Share Chakra Energy</a>
+    <a href="#" onclick="alert('To add Chakra: open browser menu → Add to Home Screen');">Add to Home</a>
+    <a href="#" onclick="window.close();">Exit</a>
+  </div>
+</div>
+"""
+
+components.html(menu_html, height=0)
+
+# =========================
 # HIDE STREAMLIT BRANDING
 # =========================
 st.markdown("""
@@ -200,4 +260,5 @@ st.markdown(
 st.sidebar.markdown("### Usage")
 st.sidebar.write("Session:", st.session_state.session_count, "/", MAX_SESSION_QUESTIONS)
 st.sidebar.write("Today:", st.session_state.daily_count, "/", MAX_DAILY_QUESTIONS)
+
 
