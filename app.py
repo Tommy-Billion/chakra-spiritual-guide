@@ -72,17 +72,6 @@ menu_html = """
 components.html(menu_html, height=0)
 
 # =========================
-# HIDE STREAMLIT BRANDING
-# =========================
-st.markdown("""
-<style>
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-header {visibility: hidden;}
-</style>
-""", unsafe_allow_html=True)
-
-# =========================
 # STYLING (GLOBAL PREMIUM)
 # =========================
 st.markdown("""
@@ -260,5 +249,6 @@ st.markdown(
 st.sidebar.markdown("### Usage")
 st.sidebar.write("Session:", st.session_state.session_count, "/", MAX_SESSION_QUESTIONS)
 st.sidebar.write("Today:", st.session_state.daily_count, "/", MAX_DAILY_QUESTIONS)
+
 
 
