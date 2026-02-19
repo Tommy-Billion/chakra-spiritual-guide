@@ -13,98 +13,22 @@ st.set_page_config(
 )
 
 # =========================
-# GLOBAL STYLING
+# CENTERED LOTUS ICON + TITLE
 # =========================
-st.markdown("""
-<style>
-html, body, [class*="css"] {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #0e1117;
-    color: #ffffff;
-    margin:0;
-    padding:0;
-    height:100%;
-}
-
-/* CENTER SPLASH ICON */
-.center-splash {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 80vh;  /* 80% viewport height */
-    text-align: center;
-}
-
-.center-splash img {
-    width: 140px;
-    max-width: 35vw;  /* scales on small screens */
-    margin-bottom: 20px;
-}
-
-.center-splash .title {
-    font-size: 42px;
-    font-weight: 600;
-}
-
-.center-splash .subtitle {
-    font-size: 18px;
-    color: #a0a0a0;
-}
-
-/* CHAT INPUT AND RESPONSE BOX */
-.stTextInput > div > div > input {
-    background-color: #1c1f26;
-    color: white;
-    border-radius: 12px;
-    padding: 12px;
-}
-
-.stButton button {
-    width: 100%;
-    border-radius: 12px;
-    padding: 12px;
-    background: linear-gradient(90deg, #7b5cff, #00c2ff);
-    color: white;
-    font-weight: 600;
-    border: none;
-}
-
-.response-box {
-    background-color: #1c1f26;
-    padding: 20px;
-    border-radius: 14px;
-    margin-top: 25px;
-    line-height: 1.6;
-    font-size: 17px;
-}
-</style>
-""", unsafe_allow_html=True)
-
-# =========================
-# SPLASH ICON + TITLE (CENTERED)
-# =========================
-st.markdown("""
-<div class="center-splash">
-    <img src="assets/chakra_icon.png" alt="Chakra Icon">
-    <div class="title">Chakra</div>
-    <div class="subtitle">Global Spiritual Guidance</div>
-</div>
-""", unsafe_allow_html=True)
+st.image("assets/chakra_icon.png", width=130)
+st.markdown(
+    '<div style="text-align:center; font-size:42px; font-weight:600; margin-top:10px;">Chakra</div>',
+    unsafe_allow_html=True
+)
+st.markdown(
+    '<div style="text-align:center; font-size:18px; color:#a0a0a0; margin-bottom:30px;">Global Spiritual Guidance</div>',
+    unsafe_allow_html=True
+)
 
 # =========================
 # CHAKRA CUSTOM MENU (tap-friendly)
 # =========================
 menu_html = """
-<div class="chakra-menu-container">
-  <div class="chakra-menu-button" onclick="var menu=this.nextElementSibling; menu.style.display=(menu.style.display=='block')?'none':'block';">☰</div>
-  <div class="chakra-menu-content">
-    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);alert('Chakra link copied ✨');">Share Chakra Energy</a>
-    <a href="#" onclick="alert('To add Chakra: open browser menu → Add to Home Screen');">Add to Home</a>
-    <a href="#" onclick="window.close();">Exit</a>
-  </div>
-</div>
-
 <style>
 .chakra-menu-container {
     position: fixed;
@@ -142,9 +66,57 @@ menu_html = """
     background-color: #2a2f3a;
 }
 </style>
+
+<div class="chakra-menu-container">
+  <div class="chakra-menu-button" onclick="var menu=this.nextElementSibling; menu.style.display=(menu.style.display=='block')?'none':'block';">☰</div>
+  <div class="chakra-menu-content">
+    <a href="#" onclick="navigator.clipboard.writeText(window.location.href);alert('Chakra link copied ✨');">Share Chakra Energy</a>
+    <a href="#" onclick="alert('To add Chakra: open browser menu → Add to Home Screen');">Add to Home</a>
+    <a href="#" onclick="window.close();">Exit</a>
+  </div>
+</div>
 """
 
 components.html(menu_html, height=0)
+
+# =========================
+# GLOBAL STYLING
+# =========================
+st.markdown("""
+<style>
+html, body, [class*="css"] {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #0e1117;
+    color: #ffffff;
+}
+
+.stTextInput > div > div > input {
+    background-color: #1c1f26;
+    color: white;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.stButton button {
+    width: 100%;
+    border-radius: 12px;
+    padding: 12px;
+    background: linear-gradient(90deg, #7b5cff, #00c2ff);
+    color: white;
+    font-weight: 600;
+    border: none;
+}
+
+.response-box {
+    background-color: #1c1f26;
+    padding: 20px;
+    border-radius: 14px;
+    margin-top: 25px;
+    line-height: 1.6;
+    font-size: 17px;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # =========================
 # LOAD SECRETS
